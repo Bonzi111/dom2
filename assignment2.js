@@ -124,8 +124,17 @@ function tsortTable(param) {
         }
     }
     flag = !flag;
+    createTable();
 }
+let temp = true;
 function dsortTable(param)
 {
-    console.log("date sort string is been invoked");
+    json.sort(function(a, b){
+        var aa = a.split('-').reverse().join(),
+            bb = b.split('-').reverse().join();
+        return aa < bb ? -1 : (aa > bb ? 1 : 0);
+    });
+    temp =!temp;
+    createTable();
 }
+
