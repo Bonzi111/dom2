@@ -15,7 +15,7 @@ function getvalue()
     removeRowButton.setAttribute("class","glyphicon glyphicon-remove");
     removeRowButton.onclick = function() 
     {
-        getvalue(); 
+        alert("TODO list no added");
     }
     var selectRowButton = document.createElement("BUTTON");
     selectRowButton.setAttribute("class","glyphicon glyphicon-ok");
@@ -41,37 +41,41 @@ var json=[
 function TODO()
 {
   
-    var a=document.getElementById("calendar").value;
-    var b=document.getElementById("descript").value;
-    if(a == "" || b == "")
+    var date=document.getElementById("calendar").value;
+    var description=document.getElementById("descript").value;
+    if(date == "" || description == "")
     {
         alert("not valid fields");   
     }
     else
       {
-    json.push({"time":a,"description":b})
+    json.push({"time":date,"description":description})
     createTable();
       }
 }
 function createTable()
 {
+    let previousdata=document.getElementById("dynamicTable");
+    if(!!previousdata){
+        previousdata.remove();
+    }
     var table = document.createElement('table');
     table.setAttribute('id', 'dynamicTable');
     var header = Object.keys(json[0]);
     var tr = document.createElement('tr');
-    for (var i = 0; i < header.length; i++) {
+    for (var index = 0; index < header.length; index++) {
         var th = document.createElement('th');
-        th.innerHTML = header[i];
+        th.innerHTML = header[index];
         th.setAttribute('class', 'tableClass1');
-        th.setAttribute('id', header[i])
+        th.setAttribute('id', header[index])
         tr.appendChild(th);
     }
     table.appendChild(tr);
-    for (var i = 0; i < json.length; i++) {
+    for (var index = 0; index < json.length; index++) {
         var tr = document.createElement('tr');
-        for (var j = 0; j < header.length; j++) {
+        for (var temp = 0; temp < header.length; temp++) {
             var td = document.createElement('td');
-            td.innerHTML = json[i][header[j]];
+            td.innerHTML = json[index][header[temp]];
             td.setAttribute('class', 'tableClass');
             tr.appendChild(td);
         }
@@ -90,15 +94,22 @@ function createTable()
 }
 function addEventsToColumns() {
     var header = Object.keys(json[0]);
-    for (var i = 0; i < header.length; i++) {
-        document.getElementById(header[i]).addEventListener('click', function (event) {
-           console.log(event);
-            sortTable(event.target.innerText)
+    if(header=="time")
+    {
+        document.getElementById("time").addEventListener('click',function(event){
+            console.log(event);
+            dsortTable(event.target.innerText)
+        })
+    }
+    else{
+        document.getElementById("description").addEventListener('click',function(event){
+            console.log(event);
+            tsortTable(event.target.innerText)
         })
     }
 }
 let flag = true;
-function sortTable(param) {
+function tsortTable(param) {
     json.sort(compare);
     function compare(a, b) {
         if (a[param] > b[param] && flag)
@@ -113,4 +124,8 @@ function sortTable(param) {
         }
     }
     flag = !flag;
+}
+function dsortTable(param)
+{
+    
 }
